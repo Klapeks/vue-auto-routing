@@ -34,6 +34,6 @@ export default class VueAutoRouting {
     }
 
     async writeRoutesFile() {
-        routesCollect.renderToFile(this.opts.dir, this.opts.output);
+        await routesCollect.renderToFile(this.opts.dir, this.opts.output);
     }
 }
