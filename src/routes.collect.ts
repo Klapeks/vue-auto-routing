@@ -14,7 +14,7 @@ function collect(dir: string, path = '/'): VueRoute[] {
     if (path.startsWith('//')) path = path.substring(1);
     if (!fs.existsSync(dir)) return [];
     const files = fs.readdirSync(dir);
-    console.log("Files in", dir, 'is', files);
+    // console.log("Files in", dir, 'is', files);
     let vueRoute: VueRoute[] = []
 
     function joinWithPath(vueFile: string) {
@@ -46,7 +46,7 @@ function collect(dir: string, path = '/'): VueRoute[] {
         if (file === '_layout.vue') continue;
         if (!file.endsWith('.vue')) continue;
         file = file.substring(0, file.length - 4);
-        console.log('adding file ', file, ' in api path', path);
+        // console.log('adding file ', file, ' in api path', path);
         let vr: VueRoute = {
             filename: mPath.join(path, file).substring(1),
             path: joinWithPath(file),
@@ -80,7 +80,7 @@ function collect(dir: string, path = '/'): VueRoute[] {
     return vueRoute;
 }
 
-function render(routes: VueRoute[], prefix=''): string {
+function render(routes: VueRoute[], willOutput: string, prefix=''): string {
     let str = '';
     for (let route of routes) {
         str += ', {\n';
@@ -96,11 +96,11 @@ function render(routes: VueRoute[], prefix=''): string {
         while (rrr.includes('--')) rrr = rrr.replace('--', '-');
         while (rrr.includes('$')) rrr = rrr.replace('$', '_');
         str += '/* webpackChunkName: "' + rrr + '" */ ';
-        str += '"' + route.component + '"),\n';
+        str += '"' + mPath.relative(willOutput, route.component).substring(1) + '"),\n';
 
         if (route.children) {
             str += prefix+'\tchildren: ['
-            str += render(route.children, prefix + '\t');
+            str += render(route.children, willOutput, prefix + '\t');
             str += '],\n';
         }
         str += prefix+'}';
@@ -111,12 +111,16 @@ function render(routes: VueRoute[], prefix=''): string {
 const routesCollect = {
     collect, render,
     renderToFile(dir: string, output: string) {
-        let str = '';
+        let str = '/**\n';
+        str += '* THIS FILE IS AUTOMAITCALY GENERATED. DONT CHANGE IT.\n';
+        str += '* THIS FILE IS AUTOMAITCALY GENERATED. DONT CHANGE IT.\n';
+        str += '* THIS FILE IS AUTOMAITCALY GENERATED. DONT CHANGE IT.\n';
+        str += '*/\n\n';
         if (output.endsWith('.ts')) {
-            str = 'import { RouteRecordRaw } from "vue-router";\n\n'
-        }
-        str += 'const routerGenerated: RouteRecordRaw[] = [';
-        str += render(collect(dir));
+            str += 'import { RouteRecordRaw } from "vue-router";\n\n'
+            str += 'const routerGenerated: RouteRecordRaw[] = [';
+        } else str += 'const routerGenerated = [';
+        str += render(collect(dir), output);
         str += '];\n\n';
         str += 'export default routerGenerated;';
         fs.writeFileSync(mPath.join(process.cwd(), output), str);
