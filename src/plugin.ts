@@ -9,7 +9,7 @@ interface VAROptions {
 
 const pluginName = '@klapeks/vue-auto-routing';
 
-export class VueAutoRouting {
+export default class VueAutoRouting {
     private opts: VAROptions;
     constructor(opts: VAROptions) {
         this.opts = opts;
