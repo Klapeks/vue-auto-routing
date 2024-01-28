@@ -169,6 +169,7 @@ function render(routes: VueRoute[], willOutput: string, prefix=''): string {
         str += '/* webpackChunkName: "' + rrr + '" */ ';
 
         rrr = mPath.relative(willOutput, route.component).substring(1);
+        while (rrr.includes('\\')) rrr = rrr.replace('\\', '/');
         if (rrr.startsWith('./.')) rrr = rrr.substring(2);
         str += '"' + rrr + '"),\n';
 
