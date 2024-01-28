@@ -163,6 +163,7 @@ function render(routes: VueRoute[], willOutput: string, prefix=''): string {
         
         str += prefix+'\tcomponent: () => import(';
         let rrr = 'page-'+route.filename;
+        while (rrr.includes('\\')) rrr = rrr.replace('\\', '-');
         while (rrr.includes('/')) rrr = rrr.replace('/', '-');
         while (rrr.includes('--')) rrr = rrr.replace('--', '-');
         while (rrr.includes('$')) rrr = rrr.replace('$', '_');
