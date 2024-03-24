@@ -95,6 +95,11 @@ async function collect(dir: string, path = '/'): Promise<VueRoute[]> {
                     console.error("Invalid alias json for file", file, ":", line);
                 }
             }
+            if (line.startsWith("#props:")) {
+                line = line.substring(7);
+                line = line.trim();
+                info.props = line == 'true';
+            }
         }
         return info;
     } 
@@ -116,6 +121,7 @@ async function collect(dir: string, path = '/'): Promise<VueRoute[]> {
             filename: mPath.join(path, file).substring(1),
             path: joinWithPath(file),
             alias: addsInfo.alias,
+            props: addsInfo.props,
             component: cwdDir(file+'.vue'),
         }
         if (!vr.name) delete vr.name;

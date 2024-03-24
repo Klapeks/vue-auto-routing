@@ -14,6 +14,7 @@ const routerGenerated: RouteRecordRaw[] = [{
 	component: () => import(/* webpackChunkName: "page-bar-index" */ "./views/bar/index.vue"),
 }, {
 	path: "/bar/:id",
+	props: true,
 	component: () => import(/* webpackChunkName: "page-bar-_id" */ "./views/bar/$id.vue"),
 }, {
 	path: "/foo",

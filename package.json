@@ -1,7 +1,7 @@
 {
     "name": "@klapeks/vue-auto-routing",
     "description": "Vue auto routing by Klapeks",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "type": "commonjs",
     "author": "Klapeks",
     "license": "ISC",
